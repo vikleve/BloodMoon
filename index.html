@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Lunar Explorer — Aplicação educativa e interativa sobre as fases da Lua, com explorador, simulador e quiz lunar." />
+  <title>Lunar Explorer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== CANVAS DE ESTRELAS ===== -->
+  <canvas id="stars-canvas" aria-hidden="true"></canvas>
+
+  <!-- ===== CABEÇALHO ===== -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <!-- Logo / título principal -->
+      <div class="logo" aria-label="Lunar Explorer">
+        <span class="logo-icon" aria-hidden="true">🌕</span>
+        <span class="logo-text">Lunar <em>Explorer</em></span>
+      </div>
+
+      <!-- Navegação principal (abas) -->
+      <nav class="main-nav" aria-label="Módulos da aplicação">
+        <ul class="nav-list" role="tablist">
+          <li role="presentation">
+            <button
+              id="tab-explorer"
+              class="nav-btn active"
+              role="tab"
+              aria-selected="true"
+              aria-controls="section-explorer"
+              data-tab="explorer"
+            >
+              <span class="nav-icon" aria-hidden="true">🔭</span>
+              <span class="nav-label">Explorador Lunar</span>
+            </button>
+          </li>
+          <li role="presentation">
+            <button
+              id="tab-simulator"
+              class="nav-btn"
+              role="tab"
+              aria-selected="false"
+              aria-controls="section-simulator"
+              data-tab="simulator"
+            >
+              <span class="nav-icon" aria-hidden="true">🌀</span>
+              <span class="nav-label">Simulador do Ciclo</span>
+            </button>
+          </li>
+          <li role="presentation">
+            <button
+              id="tab-quiz"
+              class="nav-btn"
+              role="tab"
+              aria-selected="false"
+              aria-controls="section-quiz"
+              data-tab="quiz"
+            >
+              <span class="nav-icon" aria-hidden="true">🧠</span>
+              <span class="nav-label">Quiz Lunar</span>
+            </button>
+          </li>
+        </ul>
+
+        <!-- Hambúrguer para mobile -->
+        <button class="hamburger" id="hamburger-btn" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="nav-list-mobile">
+          <span></span><span></span><span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <main class="main-content" id="main-content">
+
+    <!-- ─── MÓDULO 1: EXPLORADOR LUNAR ─── -->
+    <section
+      id="section-explorer"
+      class="tab-section active"
+      role="tabpanel"
+      aria-labelledby="tab-explorer"
+      tabindex="0"
+    >
+      <div class="section-header">
+        <h1 class="section-title">
+          <span class="section-icon" aria-hidden="true">🔭</span>
+          Explorador Lunar
+        </h1>
+        <p class="section-subtitle">
+          Explore as oito fases da Lua e compreenda como o ciclo lunar funciona.
+        </p>
+      </div>
+
+      <!-- Grade de fases lunares -->
+      <div class="phases-grid" id="phases-grid" role="list" aria-label="Fases da Lua">
+        <!-- Gerado dinamicamente pelo script.js -->
+      </div>
+
+      <!-- Painel de detalhes da fase selecionada -->
+      <div class="phase-detail-panel" id="phase-detail" aria-live="polite" aria-atomic="true">
+        <div class="moon-display" id="moon-display" aria-label="Representação visual da fase lunar">
+          <div class="moon-container">
+            <div class="moon" id="moon-visual" role="img" aria-label="Lua — fase não selecionada"></div>
+          </div>
+        </div>
+
+        <div class="phase-info" id="phase-info">
+          <h2 class="phase-name" id="phase-name">Selecione uma fase</h2>
+          <p class="phase-cycle-position" id="phase-cycle-position"></p>
+          <p class="phase-illumination" id="phase-illumination"></p>
+          <p class="phase-description" id="phase-description">
+            Clique em uma das fases acima para ver sua descrição científica detalhada.
+          </p>
+        </div>
+      </div>
+
+      <!-- Navegação anterior / próxima -->
+      <div class="phase-navigation" aria-label="Navegar entre fases">
+        <button id="btn-prev-phase" class="nav-phase-btn" aria-label="Fase anterior" disabled>
+          <span aria-hidden="true">◀</span> Anterior
+        </button>
+        <span class="phase-counter" id="phase-counter" aria-live="polite"></span>
+        <button id="btn-next-phase" class="nav-phase-btn" aria-label="Próxima fase" disabled>
+          Próxima <span aria-hidden="true">▶</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ─── MÓDULO 2: SIMULADOR ─── -->
+    <section
+      id="section-simulator"
+      class="tab-section"
+      role="tabpanel"
+      aria-labelledby="tab-simulator"
+      tabindex="0"
+      hidden
+    >
+      <div class="section-header">
+        <h1 class="section-title">
+          <span class="section-icon" aria-hidden="true">🌀</span>
+          Simulador do Ciclo Lunar
+        </h1>
+        <p class="section-subtitle">
+          Acompanhe a progressão das fases ao longo dos 29,53 dias do ciclo sinódico.
+        </p>
+      </div>
+
+      <div class="simulator-layout">
+        <!-- Lua animada -->
+        <div class="sim-moon-wrap">
+          <div class="moon sim-moon" id="sim-moon" role="img" aria-label="Lua no simulador"></div>
+          <p class="sim-phase-label" id="sim-phase-label">—</p>
+        </div>
+
+        <!-- Painel de controle -->
+        <div class="sim-controls">
+          <div class="sim-info-row">
+            <div class="sim-info-box">
+              <span class="sim-info-label">Dia do ciclo</span>
+              <span class="sim-info-value" id="sim-day">0.0</span>
+            </div>
+            <div class="sim-info-box">
+              <span class="sim-info-label">Fase</span>
+              <span class="sim-info-value sim-info-phase" id="sim-phase-name">Lua Nova</span>
+            </div>
+          </div>
+
+          <!-- Barra de progresso -->
+          <div class="progress-wrap" aria-label="Progresso do ciclo lunar">
+            <div class="progress-bar" id="sim-progress-bar" role="progressbar"
+                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+            </div>
+          </div>
+          <p class="progress-label"><span id="sim-progress-pct">0</span>% do ciclo concluído</p>
+
+          <!-- Botões de controle -->
+          <div class="sim-btn-row">
+            <button id="sim-btn-start" class="sim-btn primary" aria-label="Iniciar simulação">
+              <span aria-hidden="true">▶</span> Iniciar
+            </button>
+            <button id="sim-btn-pause" class="sim-btn" aria-label="Pausar simulação" disabled>
+              <span aria-hidden="true">⏸</span> Pausar
+            </button>
+            <button id="sim-btn-reset" class="sim-btn" aria-label="Reiniciar simulação">
+              <span aria-hidden="true">↺</span> Reiniciar
+            </button>
+          </div>
+
+          <!-- Controle de velocidade -->
+          <div class="speed-control">
+            <label for="sim-speed" class="speed-label">Velocidade da simulação:</label>
+            <div class="speed-options" role="group" aria-label="Opções de velocidade">
+              <button class="speed-btn active" data-speed="1" aria-pressed="true">1×</button>
+              <button class="speed-btn" data-speed="5" aria-pressed="false">5×</button>
+              <button class="speed-btn" data-speed="10" aria-pressed="false">10×</button>
+              <button class="speed-btn" data-speed="30" aria-pressed="false">30×</button>
+              <button class="speed-btn" data-speed="60" aria-pressed="false">60×</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── MÓDULO 3: QUIZ ─── -->
+    <section
+      id="section-quiz"
+      class="tab-section"
+      role="tabpanel"
+      aria-labelledby="tab-quiz"
+      tabindex="0"
+      hidden
+    >
+      <div class="section-header">
+        <h1 class="section-title">
+          <span class="section-icon" aria-hidden="true">🧠</span>
+          Quiz Lunar
+        </h1>
+        <p class="section-subtitle">
+          Teste seus conhecimentos sobre as fases da Lua e o ciclo lunar.
+        </p>
+      </div>
+
+      <!-- Barra de progresso do quiz -->
+      <div class="quiz-progress-wrap" aria-label="Progresso do quiz">
+        <div class="quiz-progress-bar" id="quiz-progress-bar" role="progressbar"
+             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+      </div>
+      <p class="quiz-progress-label" id="quiz-progress-label" aria-live="polite">Pergunta 0 de 0</p>
+
+      <!-- Container da pergunta -->
+      <div class="quiz-card" id="quiz-card" aria-live="polite">
+        <!-- Gerado dinamicamente pelo script.js -->
+        <div id="quiz-start-screen">
+          <div class="quiz-moon-deco" aria-hidden="true">🌕</div>
+          <h2 class="quiz-start-title">Pronto para o desafio?</h2>
+          <p class="quiz-start-text">Responda às perguntas sobre as fases da Lua. Você terá uma tentativa por questão.</p>
+          <button id="quiz-btn-start" class="sim-btn primary quiz-start-btn">
+            Iniciar Quiz
+          </button>
+        </div>
+      </div>
+
+      <!-- Resultado final (oculto até o fim) -->
+      <div class="quiz-result" id="quiz-result" hidden aria-live="assertive">
+        <h2 class="quiz-result-title">Quiz Concluído!</h2>
+        <p class="quiz-result-score" id="quiz-result-score"></p>
+        <p class="quiz-result-msg" id="quiz-result-msg"></p>
+        <button id="quiz-btn-restart" class="sim-btn primary">↺ Reiniciar Quiz</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== RODAPÉ ===== -->
+  <footer class="site-footer" role="contentinfo">
+    <p class="footer-text">
+      <span aria-hidden="true">🌙</span>
+      Lunar Explorer &mdash; Projeto educativo sobre as fases da Lua &mdash; 2026
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
