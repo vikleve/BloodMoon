@@ -62,9 +62,30 @@ body {
   overflow-x: hidden;
 }
 
+/* Link pular para conteúdo (Acessibilidade) */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 1rem;
+  background: var(--color-primary-dark);
+  color: #ffffff;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-sm);
+  z-index: 1000;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top var(--transition-fast);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+}
+
+.skip-link:focus {
+  top: 1rem;
+  outline: 2px solid #ffffff;
+}
+
 /* Focus visible para acessibilidade */
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-cyan);
   outline-offset: 3px;
 }
 
@@ -497,6 +518,32 @@ body {
   gap: 1.4rem;
 }
 
+/* Aviso educativo do simulador (especificação) */
+.sim-disclaimer {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1.1rem;
+  background: rgba(72, 202, 228, 0.08);
+  border: 1px solid rgba(72, 202, 228, 0.25);
+  border-radius: var(--radius-md);
+}
+
+.disclaimer-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.disclaimer-text {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+.disclaimer-text strong {
+  color: var(--color-cyan);
+}
+
 .sim-info-row {
   display: flex;
   gap: 1.5rem;
@@ -827,72 +874,117 @@ body {
 }
 
 /* ── 10. MOON PHASE VISUAL DEFINITIONS ───────────────────── */
-/* Cada fase usa clip-path para simular a porção iluminada */
+/* Cada fase usa clip-path SVG normalizado ou fallback CSS */
 
 /* Lua Nova — completamente escura */
-.moon-phase-0::before   { background: transparent; }
+.moon-phase-0::before {
+  background: transparent;
+  clip-path: none;
+}
 
-/* Crescente Inicial — faixa iluminada à direita (~10%) */
+/* Lua Crescente — faixa iluminada à direita (~25%) */
 .moon-phase-1::before {
-  clip-path: ellipse(15% 50% at 78% 50%);
   background: var(--moon-color);
+  clip-path: ellipse(28% 50% at 75% 50%);
+  clip-path: url(#clip-waxing-crescent);
 }
 
-/* Quarto Crescente — metade direita iluminada (~50%) */
+/* Quarto Crescente — metade direita iluminada (50%) */
 .moon-phase-2::before {
-  clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%);
   background: var(--moon-color);
+  clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%);
 }
 
-/* Gibosa Crescente — mais que metade direita (~80%) */
+/* Lua Gibosa Crescente — mais que metade direita (~75%) */
 .moon-phase-3::before {
-  clip-path: ellipse(72% 50% at 62% 50%);
   background: var(--moon-color);
+  clip-path: ellipse(75% 50% at 65% 50%);
+  clip-path: url(#clip-waxing-gibbous);
 }
 
 /* Lua Cheia — toda iluminada (100%) */
 .moon-phase-4::before {
+  background: var(--moon-color);
   clip-path: none;
-  background: var(--moon-color);
 }
 
-/* Gibosa Minguante — mais que metade esquerda (~80%) */
+/* Lua Gibosa Minguante — mais que metade esquerda (~75%) */
 .moon-phase-5::before {
-  clip-path: ellipse(72% 50% at 38% 50%);
   background: var(--moon-color);
+  clip-path: ellipse(75% 50% at 35% 50%);
+  clip-path: url(#clip-waning-gibbous);
 }
 
-/* Quarto Minguante — metade esquerda iluminada (~50%) */
+/* Quarto Minguante — metade esquerda iluminada (50%) */
 .moon-phase-6::before {
-  clip-path: polygon(0% 0%, 50% 0%, 50% 100%, 0% 100%);
   background: var(--moon-color);
+  clip-path: polygon(0% 0%, 50% 0%, 50% 100%, 0% 100%);
 }
 
-/* Minguante Final — faixa iluminada à esquerda (~10%) */
+/* Lua Minguante — faixa iluminada à esquerda (~25%) */
 .moon-phase-7::before {
-  clip-path: ellipse(15% 50% at 22% 50%);
   background: var(--moon-color);
+  clip-path: ellipse(28% 50% at 25% 50%);
+  clip-path: url(#clip-waning-crescent);
 }
 
 /* Lua cheia: brilho extra */
 .moon.moon-phase-4 {
-  box-shadow: 0 0 60px rgba(240,230,140,.4), 0 0 20px rgba(240,230,140,.2);
+  box-shadow: 0 0 60px rgba(240,230,140,.45), 0 0 20px rgba(240,230,140,.25);
 }
 
-/* ── 11. RESPONSIVE UTILITIES ─────────────────────────────── */
+/* ── 11. RESPONSIVE UTILITIES & ACCESSIBILITY ────────────── */
 @media (max-width: 640px) {
-  .section-title { font-size: 1.4rem; }
-  .phase-name    { font-size: 1.3rem; }
-  .logo-text     { font-size: 1.1rem; }
+  .section-title { font-size: 1.45rem; }
+  .phase-name    { font-size: 1.35rem; }
+  .logo-text     { font-size: 1.15rem; }
   .nav-label     { display: none; }
-  .hamburger     { display: flex; }
+  .hamburger     { display: flex; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
   .nav-list      { display: none; }
-  .nav-list.open { display: flex; flex-direction: column; position: absolute; top: var(--header-height); right: 0; left: 0; background: var(--color-bg-card); border-bottom: 1px solid var(--color-border); padding: 1rem; }
+  .nav-list.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: var(--header-height);
+    right: 0;
+    left: 0;
+    background: #0b1430f5;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--color-border);
+    padding: 1.2rem;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  }
+  .nav-list.open .nav-btn {
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    justify-content: flex-start;
+  }
+  .nav-list.open .nav-label {
+    display: inline;
+  }
   .sim-controls  { padding: 1.2rem; }
+  .sim-btn-row { flex-direction: column; }
+  .sim-btn { min-height: 44px; }
+  .speed-btn { min-height: 40px; padding: 0.45rem 1rem; }
 }
 
 @media (max-width: 480px) {
   :root { --moon-size: 160px; }
+  .phases-grid { grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
+  .phase-card { padding: 0.5rem 0.2rem; }
+  .phase-card-name { font-size: 0.68rem; }
   .phase-detail-panel { padding: 1.2rem; }
   .quiz-card { padding: 1.2rem 1rem; }
+}
+
+/* Suporte para usuários que preferem redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
