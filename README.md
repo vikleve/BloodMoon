@@ -1,63 +1,106 @@
-# 🌕 Lunar Explorer
+# 🌕 BloodMoon — Lunar Explorer
 
-Aplicação web educativa e interativa sobre as oito fases da Lua.
+Aplicação web educativa e interativa sobre as fases da Lua, simulação do ciclo sinódico e quiz de fixação do conhecimento.
 
-## Estrutura de arquivos
+*Versão:* 1.0  
+*Tecnologias:* HTML5, CSS3 e JavaScript puro (Vanilla JS)  
+*Repositório:* [https://github.com/vikleve/BloodMoon](https://github.com/vikleve/BloodMoon)
+
+---
+
+## 📁 Estrutura de Arquivos
 
 ```
-Vik/
-├── index.html   # Estrutura HTML5 semântica com os três módulos
-├── style.css    # Identidade visual espacial, layout e animações
-├── script.js    # Lógica de todos os módulos e interatividade
-└── README.md    # Este arquivo
+BloodMoon/
+├── index.html       # Estrutura HTML5 semântica com os três módulos e A11y
+├── style.css        # Identidade visual espacial, CSS responsivo e clip-paths lunares
+├── script.js        # Lógica dos módulos, simulação do ciclo e quiz lunar
+├── test.js          # Suíte de testes automatizados multiplataforma (Node.js)
+├── test.sh          # Script de execução rápida para Linux / macOS
+├── test_static.ps1  # Script de testes estáticos para PowerShell (Windows)
+├── CONTRIBUTING.md  # Diretrizes de contribuição, branches e commits
+├── SPEC.md          # Especificação de software completa (SPEC 1.0)
+└── README.md        # Documentação do projeto
 ```
 
-## Módulos
+---
 
-| Módulo | Requisitos | Descrição |
-|---|---|---|
-| Explorador Lunar | RF01–RF04 | Visualize e explore as 8 fases com representação CSS, descrição científica e navegação circular |
-| Simulador do Ciclo | RF05–RF08 | Animação do ciclo de 29,53 dias com controles de iniciar/pausar/reiniciar e velocidade ajustável |
-| Quiz Lunar | RF09–RF12 | 10 perguntas embaralhadas com feedback imediato, explicações e pontuação final |
+## 🚀 Módulos do Sistema
 
-## Como executar
+### 1. Explorador Lunar
+Permite ao usuário consultar as **oito fases principais da Lua** com representação visual em tempo real, iluminação aproximada, posição no ciclo e descrições educativas aprofundadas:
 
-1. Abra a pasta `Vik/` no explorador de arquivos.
-2. Dê duplo clique em **`index.html`** para abrir no navegador padrão.
-3. Ou, na linha de comando:
+1. **Lua Nova**
+2. **Lua Crescente**
+3. **Quarto Crescente**
+4. **Lua Gibosa Crescente**
+5. **Lua Cheia**
+6. **Lua Gibosa Minguante**
+7. **Quarto Minguante**
+8. **Lua Minguante**
 
+Inclui **navegação circular** contínua entre a primeira e a última fase tanto pelos botões quanto pela grade interativa.
+
+### 2. Simulador do Ciclo Lunar
+Simula a transição contínua ao longo dos **29,53 dias do ciclo sinódico**:
+- Botões de **Iniciar**, **Pausar** e **Reiniciar**;
+- Seletor de velocidade dinâmica (**1×, 5×, 10×, 30×, 60×**);
+- Indicador do dia atual com precisão decimal;
+- Barra de progresso animada e sincronizada;
+- **Nota didática explícita:** informa com transparência que se trata de uma simulação educativa para fins didáticos, e não de uma reprodução astronômica de alta precisão.
+
+### 3. Quiz Lunar
+Questionário com **dez perguntas** sobre astronomia lunar:
+- Apresenta uma pergunta por vez com 4 alternativas e apenas 1 correta;
+- Feedback educativo imediato explicando o porquê de cada resposta;
+- Trava de resposta única (impede dupla pontuação na mesma pergunta);
+- Contabilização da pontuação e relatório de aproveitamento com percentual ao final;
+- Botão para reiniciar o quiz com reembaralhamento das perguntas.
+
+---
+
+## 🛠️ Como Executar
+
+Não são necessários servidores web pesados ou compilação de pacotes.
+
+### Opção 1: Diretamente no Navegador
+- Dê um duplo clique no arquivo **`index.html`** ou abra-o em qualquer navegador moderno (Chrome, Firefox, Edge, Safari, Opera).
+
+### Opção 2: Servidor Local Simples (opcional)
+```bash
+# Python 3
+python3 -m http.server 8000
+
+# Node.js (npx)
+npx serve .
+```
+
+---
+
+## 🧪 Testes Automatizados
+
+O projeto inclui suíte completa de testes cobrindo integridade estrutural, acessibilidade ARIA, precisão astronômica das 8 fases, cálculos do ciclo e integridade das 10 questões do quiz:
+
+### No Linux / macOS:
+```bash
+# Via script bash
+./test.sh
+
+# Ou diretamente com Node.js
+node test.js
+```
+
+### No Windows (PowerShell):
 ```powershell
-# Windows — abrir no navegador padrão
-Start-Process "C:\Users\GTI\Documents\Vik\index.html"
+powershell -ExecutionPolicy Bypass -File .\test_static.ps1
 ```
 
-Não são necessários servidor web, Node.js ou qualquer dependência externa.
+---
 
-## Requisitos implementados
+## ♿ Acessibilidade e Responsividade
 
-| RF | Descrição | Status |
-|---|---|---|
-| RF01 | Apresentar as 8 fases da Lua | ✅ |
-| RF02 | Detalhes ao selecionar uma fase (nome, descrição, iluminação, posição) | ✅ |
-| RF03 | Representação visual da Lua com iluminação astronômica correta | ✅ |
-| RF04 | Navegação circular anterior/próximo | ✅ |
-| RF05 | Simulação animada do ciclo de 29,53 dias | ✅ |
-| RF06 | Controles Iniciar, Pausar, Reiniciar | ✅ |
-| RF07 | Controle de velocidade (1×, 5×, 10×, 30×, 60×) | ✅ |
-| RF08 | Barra de progresso e contador de dias sincronizados | ✅ |
-| RF09 | ≥8 perguntas com 4 alternativas cada | ✅ (10 perguntas) |
-| RF10 | Uma resposta por pergunta, bloqueio pós-confirmação, feedback imediato | ✅ |
-| RF11 | Progresso, pontuação final e reinício do quiz | ✅ |
-| RF12 | Banco de perguntas estruturado em JavaScript | ✅ |
-
-## Tecnologias
-
-- **HTML5** — semântica, ARIA, roles e navegação por teclado
-- **CSS3** — variáveis custom, clip-path para fases lunares, animações, responsividade
-- **JavaScript puro** — `requestAnimationFrame`, módulos funcionais, sem dependências
-
-## Compatibilidade
-
-Funciona em qualquer navegador moderno: Chrome, Firefox, Edge, Safari.
-
-Testado em telas de 320 px (celular) a 1440 px (desktop).
+- **WCAG / ARIA:** Suporte a leitores de tela com `aria-live`, `role="tablist"`, `role="tabpanel"`, `role="progressbar"`, contrastes aprimorados e foco visível (`:focus-visible`).
+- **Teclado:** Navegação por abas com setas direcionais (`ArrowLeft`, `ArrowRight`), fechamento do menu mobile com `Escape`, e seleção via `Enter` / `Espaço`.
+- **Skip-link:** Atalho para pular direto ao conteúdo principal.
+- **Responsivo:** Adaptado para celulares compactos (320px–480px), tablets (768px) e monitores amplos (1200px+).
+- **Reduced Motion:** Respeita as preferências de acessibilidade vestibular com `@media (prefers-reduced-motion: reduce)`.

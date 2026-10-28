@@ -1,7 +1,9 @@
-$dir = 'C:\Users\GTI\Documents\Vik'
+$dir = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+if (-not (Test-Path "$dir\index.html")) { $dir = '.' }
 $html = Get-Content "$dir\index.html" -Raw
 $css  = Get-Content "$dir\style.css"  -Raw
 $js   = Get-Content "$dir\script.js"  -Raw
+
 
 $results = [System.Collections.Generic.List[PSCustomObject]]::new()
 
